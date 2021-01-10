@@ -60,7 +60,7 @@ int game(int Y, int X)
 	int count1=0 , count2=0;
 	int PosX[4];
 	int PosY[4];
-	int newp;
+	int newp,newp1;
 	int moves=0;
 	char fig;
 	bool matted=1;
@@ -157,69 +157,81 @@ int game(int Y, int X)
 		count2=0;
 		count1++;
 		}
-		
+		count1=0;
+		count2=0;
 		cout<<"Enter the figure you want to move:";
 		cin>>fig;
-		while (fig!=75 && fig!=69 && fig!=49 && fig!=50)
+		while (fig!=75 && fig!=49 && fig!=50)
 		{
 			cout<<"Not a valid pawn.Chose a valid one:";
 			cin>>fig;
 		}
 		switch (int(fig))
 		{
-			case 69:
-			{
-				cout<<"Enter the figures position:"<<endl;
-				cout<<"X=";
-				cin>>newp;
-				while(newp!=PosX[0]+1 || newp!=PosX[0]-1)
-				{
-					cin>>newp;
-				}
-				PosX[0]=newp+1;
-				cout<<"Y=";
-				cin>>newp;
-				while(newp!=PosY[0]+1 || newp!=PosY[0]-1)
-				{
-					cin>>newp;
-				}
-				PosY[0]=newp+1;
-				moves++;
-				break;
-			}
 			case 75:
 			{
 				cout<<"Enter the figures position:"<<endl;
+				cout<<PosX[0]<<" "<<PosY[0]<<endl;
 				cout<<"X=";
 				cin>>newp;
-				while(newp!=PosX[1]+1 || newp!=PosX[1]-1)
+				while(newp!=PosX[0]+1 && newp!=PosX[0]-1 && newp!=PosX[0])
 				{
-					cin>>newp1;
+					cout<<"You entered an invalid possition.Enter again:";
+					cin>>newp;
 				}
-				PosX[1]=newp+1;
+				PosX[0]=newp;
 				cout<<"Y=";
 				cin>>newp;
-				while(newp!=PosY[1]+1 || newp!=PosY[1]-1)
+				while(newp!=PosY[0]+1 && newp!=PosY[0]-1 && PosY[0])
 				{
 					cin>>newp;
 				}
-				PosY[1]=newp+1;
+				PosY[0]=newp;
 				moves++;
 				break;
 			}
 			case 49:
 			{
 				cout<<"Enter the figures position:"<<endl;
-				cout<<"X;
+				cout<<"X=";
+				cin>>newp;
+				cout<<"Y=";
+				cin>>newp1;
+				while((PosX[2]!=newp && PosY[2]!=newp1) || (PosX[2]==newp && PosY[2]==newp1))
+				{
+					cout<<"You entered an invalid possition.Enter again:";
+					cout<<"X=";
+					cin>>newp;
+					cout<<"Y=";
+					cin>>newp1;
+				}
+				PosX[2]=newp;
+				PosY[2]=newp1;
+				moves++;
 				break;
 			}
 			case 50:
 			{
 				cout<<"Enter the figures position:"<<endl;
-				cout<<"X;
+				cout<<"X=";
+				cin>>newp;
+				cout<<"Y=";
+				cin>>newp1;
+				while((PosX[3]!=newp && PosY[3]!=newp1) || (PosX[3]==newp && PosY[3]==newp1))
+				{
+					cout<<"You entered an invalid possition.Enter again:";
+					cout<<"X=";
+					cin>>newp;
+					cout<<"Y=";
+					cin>>newp1;
+				}
+				PosX[3]=newp;
+				PosY[3]=newp1;
+				moves++;
 				break;
 			}
 		}
+		
 	}
 	
 	return moves;
