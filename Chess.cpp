@@ -171,10 +171,9 @@ int game(int Y, int X)
 			case 75:
 			{
 				cout<<"Enter the figures position:"<<endl;
-				cout<<PosX[0]<<" "<<PosY[0]<<endl;
 				cout<<"X=";
 				cin>>newp;
-				while(newp!=PosX[0]+1 && newp!=PosX[0]-1 && newp!=PosX[0])
+				while(newp!=PosX[0]+1 && newp!=PosX[0]-1 && newp!=PosX[0] && (newp<1 || newp>8))
 				{
 					cout<<"You entered an invalid possition.Enter again:";
 					cin>>newp;
@@ -182,11 +181,12 @@ int game(int Y, int X)
 				PosX[0]=newp;
 				cout<<"Y=";
 				cin>>newp;
-				while(newp!=PosY[0]+1 && newp!=PosY[0]-1 && PosY[0])
+				while((newp!=PosY[0]+1 && newp!=PosY[0]-1 && newp!=PosY[0]) && (newp<1 || newp>8))
 				{
+					cout<<"You entered an invalid possition.Enter again:";
 					cin>>newp;
 				}
-				PosY[0]=newp;
+				PosY[0]=newp-1;
 				moves++;
 				break;
 			}
@@ -197,16 +197,16 @@ int game(int Y, int X)
 				cin>>newp;
 				cout<<"Y=";
 				cin>>newp1;
-				while((PosX[2]!=newp && PosY[2]!=newp1) || (PosX[2]==newp && PosY[2]==newp1))
+				while((PosX[2]!=newp && PosY[2]!=newp1) || (PosX[2]==newp && PosY[2]==newp1) && (newp<1 || newp>8) && (newp1<1 || newp1>8))
 				{
-					cout<<"You entered an invalid possition.Enter again:";
+					cout<<"You entered an invalid possition.Enter again:"<<endl;
 					cout<<"X=";
 					cin>>newp;
 					cout<<"Y=";
 					cin>>newp1;
 				}
 				PosX[2]=newp;
-				PosY[2]=newp1;
+				PosY[2]=newp1-1;
 				moves++;
 				break;
 			}
@@ -217,21 +217,34 @@ int game(int Y, int X)
 				cin>>newp;
 				cout<<"Y=";
 				cin>>newp1;
-				while((PosX[3]!=newp && PosY[3]!=newp1) || (PosX[3]==newp && PosY[3]==newp1))
+				while((PosX[3]!=newp && PosY[3]!=newp1) || (PosX[3]==newp && PosY[3]==newp1) && (newp<1 || newp>8) && (newp1<1 || newp1>8))
 				{
-					cout<<"You entered an invalid possition.Enter again:";
+					cout<<"You entered an invalid possition.Enter again:"<<endl;
 					cout<<"X=";
 					cin>>newp;
 					cout<<"Y=";
 					cin>>newp1;
 				}
 				PosX[3]=newp;
-				PosY[3]=newp1;
+				PosY[3]=newp1-1;
 				moves++;
 				break;
 			}
 		}
-		
+		do
+		{
+			newp=rand()%(X) + 1;
+			newp1=rand()%(Y) + 1;
+			while ((newp!=PosX[1]+1 && newp1!=PosX[1]-1 && newp!=PosX[1]) && (newp1!=PosY[1]+1 && newp1!=PosY[1]-1 && newp1!=PosY[1]))
+			{
+				newp=rand()%(X) + 1;
+				newp1=rand()%(Y) + 0;
+			}
+		}while((PosX[1]==PosX[2] && PosX[1]==PosX[2]+1 && PosX[1]==PosX[2]-1) && (PosX[1]==PosX[3] && PosX[1]==PosX[3]+1 && PosX[1]==PosX[3]-1) && 
+			  (PosY[1]==PosY[2] && PosY[1]==PosY[2]+1 && PosY[1]==PosY[2]-1) && (PosY[1]==PosY[3] && PosY[1]==PosY[3]+1 && PosY[1]==PosX[3]-1));
+
+		PosX[1]=newp;
+		PosY[1]=newp1-1;
 	}
 	
 	return moves;
