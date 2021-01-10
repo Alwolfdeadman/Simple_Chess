@@ -58,24 +58,69 @@ int main()
 int game(int Y, int X)
 {
 	int count1=0 , count2=0;
-	int oldPos[8];
+	int PosX[4];
+	int PosY[4];
 	int newp;
 	int moves=0;
 	char fig;
 	bool matted=1;
 
-	srand(time(NULL));
+
+	{		//Placement of pawns
+		
+		srand(time(NULL));
+		PosX[0] = rand()%(X) + 1; //player king X	
+		PosY[0] = rand()%(Y) + 0; //player king Y
+		
+		
+		
+		newp=rand()%(X) + 1;
+		while(PosX[0]==newp )
+		{
+			newp=rand()%(X) + 1;     			//Knight2 X	
+		}
+		PosX[3]=newp;
+		newp=rand()%(Y) + 0;
+		while(PosY[0]==newp)
+		{
+			newp=rand()%(Y) + 0;     			//Knight2 Y
+		}
+		PosY[3]=newp;
+		
+		
+		
+		newp=rand()%(X) + 1;
+		while(PosX[0]==newp || PosX[3]==newp)
+		{
+			newp=rand()%(X) + 1;     			//Knight1 X		
+		}
+		PosX[2]=newp;
+		newp=rand()%(Y) + 0;
+		while(PosY[0]==newp || PosY[3]==newp)
+		{
+			newp=rand()%(Y) + 0;     			//Knight1 Y
+			
+		}
+		PosY[2] = newp;
+		
+		
+		
+		newp=rand()%(X) + 1;
+		while(PosX[3]==newp || PosX[0]==newp || PosX[2]==newp || PosX[0]+1==newp || PosX[0]-1==newp)
+		{
+			newp=rand()%(X) + 1;     			//Enemy king X
+		}
+		PosX[1]=newp;
+		newp=rand()%(Y) + 0;
+		while(PosY[3]==newp || PosY[0]==newp || PosY[2]==newp|| PosY[0]+1==newp || PosY[0]-1==newp)
+		{
+			newp=rand()%(Y) + 0;     			//Enemy king Y
+			
+		}
+		PosY[1] = newp;
+	}
 	
-	oldPos[0]=rand()%(X-1) + 1; //player king X
-	oldPos[1]=rand()%(Y) + 0; //player king Y
-	oldPos[2]=rand()%(X-1) + 1; //enemy king X
-	oldPos[3]=rand()%(Y) + 0; //enemy king Y
-	oldPos[4]=rand()%(X-1) + 1; //knight1 X
-	oldPos[5]=rand()%(Y) + 0; //knight1 Y
-	oldPos[6]=rand()%(X-1) + 1; //knight2 X
-	oldPos[7]=rand()%(Y) + 0; //knight2 Y
-	
-	
+
 	while(matted)
 	{										//map drawing
 		while(count1<Y)
@@ -90,19 +135,19 @@ int game(int Y, int X)
 				{
 					cout<<char(186)<<"\n";
 				}
-				else if(count1==oldPos[1] && count2==oldPos[0])
-				{
-					cout<<"E"<<" ";
-				}
-				else if(count1==oldPos[3] && count2==oldPos[2])
+				else if(count1==PosY[0] && count2==PosX[0])
 				{
 					cout<<"K"<<" ";
 				}
-				else if(count1==oldPos[5] && count2==oldPos[4])
+				else if(count1==PosY[1] && count2==PosX[1])
+				{
+					cout<<"E"<<" ";
+				}
+				else if(count1==PosY[2] && count2==PosX[2])
 				{
 					cout<<"1"<<" ";
 				}
-				else if(count1==oldPos[7] && count2==oldPos[6])
+				else if(count1==PosY[3] && count2==PosX[3])
 				{
 					cout<<"2"<<" ";
 				}
@@ -112,71 +157,69 @@ int game(int Y, int X)
 		count2=0;
 		count1++;
 		}
-		break;
-		count1=0;
-		count2=0;
-//		cout<<"Enter the figure you want to move:";
-//		cin>>fig;
-//		while (fig!=75 && fig!=69 && fig!=49 && fig!=50)2
-//		
-//		{
-//			cout<<"Not a valid pawn.Chose a valid one:";
-//			cin>>fig;
-//		}
-//		switch (int(fig))
-//		{
-//			case 69:
-//			{
-//				cout<<"Enter the figures position:"<<endl;
-//				cout<<"X=";
-//				cin>>newp;
-//				while(newp!=oldPos[0]+1 || newp!=oldPos[0]-1)
-//				{
-//					cin>>newp;
-//				}
-//				oldPos[0]=newp;
-//				cout<<"Y=";
-//				cin>>newp;
-//				while(newp!=oldPos[1]+1 || newp!=oldPos[1]-1)
-//				{
-//					cin>>newp;
-//				}
-//				oldPos[0]=newp;
-//				break;
-//			}
-//			case 75:
-//			{
-//				cout<<"Enter the figures position:"<<endl;
-//				cout<<"X=";
-//				cin>>newp;
-//				while(newp==oldPos[2]+1 || newp==oldPos[2]-1)
-//				{
-//					cin>>newp;
-//				}
-//				oldPos[2]=newp;
-//				cout<<"Y=";
-//				cin>>newp;
-//				while(newp==oldPos[3]+1 || newp==oldPos[3]-1)
-//				{
-//					cin>>newp;
-//				}
-//				oldPos[3]=newp;
-//				break;
-//			}
-//			case 49:
-//			{
-//				cout<<"Enter the figures position:"<<endl;
-//				cout<<"X=";
-//				break;
-//			}
-//			case 50:
-//			{
-//				cout<<"Enter the figures position:"<<endl;
-//				cout<<"X=";
-//				break;
-//			}
-//		}
 		
+		cout<<"Enter the figure you want to move:";
+		cin>>fig;
+		while (fig!=75 && fig!=69 && fig!=49 && fig!=50)
+		{
+			cout<<"Not a valid pawn.Chose a valid one:";
+			cin>>fig;
+		}
+		switch (int(fig))
+		{
+			case 69:
+			{
+				cout<<"Enter the figures position:"<<endl;
+				cout<<"X=";
+				cin>>newp;
+				while(newp!=PosX[0]+1 || newp!=PosX[0]-1)
+				{
+					cin>>newp;
+				}
+				PosX[0]=newp+1;
+				cout<<"Y=";
+				cin>>newp;
+				while(newp!=PosY[0]+1 || newp!=PosY[0]-1)
+				{
+					cin>>newp;
+				}
+				PosY[0]=newp+1;
+				moves++;
+				break;
+			}
+			case 75:
+			{
+				cout<<"Enter the figures position:"<<endl;
+				cout<<"X=";
+				cin>>newp;
+				while(newp!=PosX[1]+1 || newp!=PosX[1]-1)
+				{
+					cin>>newp1;
+				}
+				PosX[1]=newp+1;
+				cout<<"Y=";
+				cin>>newp;
+				while(newp!=PosY[1]+1 || newp!=PosY[1]-1)
+				{
+					cin>>newp;
+				}
+				PosY[1]=newp+1;
+				moves++;
+				break;
+			}
+			case 49:
+			{
+				cout<<"Enter the figures position:"<<endl;
+				cout<<"X;
+				break;
+			}
+			case 50:
+			{
+				cout<<"Enter the figures position:"<<endl;
+				cout<<"X;
+				break;
+			}
+		}
 	}
 	
 	return moves;
