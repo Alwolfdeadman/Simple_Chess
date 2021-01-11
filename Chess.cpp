@@ -11,7 +11,7 @@ int game(int Y, int X);
 int main()
 {
 	int choice, hight=8, lenght=8;
-	int moves=0;
+	int move=0;
 	
 	while(true)
 	{
@@ -31,7 +31,9 @@ int main()
 		{
 			case 1:
 				{
-					game(hight, lenght);
+					move=game(hight, lenght);
+					cout<<"Congratulations you have won!!!";
+					cout<<"Finished in :"<<move;
 					break;
 				}
 			case 2:
@@ -57,7 +59,7 @@ int main()
 
 int game(int Y, int X)
 {
-	int count1=0 , count2=0;
+	int count1=1 , count2=0;
 	int PosX[4];
 	int PosY[4];
 	int newp,newp1;
@@ -70,7 +72,7 @@ int game(int Y, int X)
 		
 		srand(time(NULL));
 		PosX[0] = rand()%(X) + 1; //player king X	
-		PosY[0] = rand()%(Y) + 0; //player king Y
+		PosY[0] = rand()%(Y) + 1; //player king Y
 		
 		
 		
@@ -80,10 +82,10 @@ int game(int Y, int X)
 			newp=rand()%(X) + 1;     			//Knight2 X	
 		}
 		PosX[3]=newp;
-		newp=rand()%(Y) + 0;
+		newp=rand()%(Y) + 1;
 		while(PosY[0]==newp)
 		{
-			newp=rand()%(Y) + 0;     			//Knight2 Y
+			newp=rand()%(Y) + 1;     			//Knight2 Y
 		}
 		PosY[3]=newp;
 		
@@ -95,10 +97,10 @@ int game(int Y, int X)
 			newp=rand()%(X) + 1;     			//Knight1 X		
 		}
 		PosX[2]=newp;
-		newp=rand()%(Y) + 0;
+		newp=rand()%(Y) + 1;
 		while(PosY[0]==newp || PosY[3]==newp)
 		{
-			newp=rand()%(Y) + 0;     			//Knight1 Y
+			newp=rand()%(Y) + 1;     			//Knight1 Y
 			
 		}
 		PosY[2] = newp;
@@ -114,7 +116,7 @@ int game(int Y, int X)
 		newp=rand()%(Y) + 0;
 		while(PosY[3]==newp || PosY[0]==newp || PosY[2]==newp|| PosY[0]+1==newp || PosY[0]-1==newp)
 		{
-			newp=rand()%(Y) + 0;     			//Enemy king Y
+			newp=rand()%(Y) + 1;     			//Enemy king Y
 			
 		}
 		PosY[1] = newp;
@@ -122,8 +124,10 @@ int game(int Y, int X)
 	
 
 	while(matted)
-	{										//map drawing
-		while(count1<Y)
+	{		
+		count1=1;
+		count2=0;								//map drawing
+		while(count1<=Y)
 		{
 			while(count2<X+2)
 			{
@@ -157,8 +161,7 @@ int game(int Y, int X)
 		count2=0;
 		count1++;
 		}
-		count1=0;
-		count2=0;
+
 		cout<<"Enter the figure you want to move:";
 		cin>>fig;
 		while (fig!=75 && fig!=49 && fig!=50)
@@ -173,7 +176,12 @@ int game(int Y, int X)
 				cout<<"Enter the figures position:"<<endl;
 				cout<<"X=";
 				cin>>newp;
-				while(newp!=PosX[0]+1 && newp!=PosX[0]-1 && newp!=PosX[0] && (newp<1 || newp>8))
+				while(newp>8 || newp<1)
+				{
+					cout<<"You entered a value greater or lower than the boards range. Enter again:";
+					cin>>newp;
+				}
+				while(newp>PosX[0]+1 || newp<PosX[0]-1)
 				{
 					cout<<"You entered an invalid possition.Enter again:";
 					cin>>newp;
@@ -181,12 +189,17 @@ int game(int Y, int X)
 				PosX[0]=newp;
 				cout<<"Y=";
 				cin>>newp;
-				while((newp!=PosY[0]+1 && newp!=PosY[0]-1 && newp!=PosY[0]) && (newp<1 || newp>8))
+				while(newp>8 || newp<1)
+				{
+					cout<<"You entered a value greater or lower than the boards range. Enter again:";
+					cin>>newp;
+				}
+				while(newp>PosY[0]+1 || newp<PosY[0]-1)
 				{
 					cout<<"You entered an invalid possition.Enter again:";
 					cin>>newp;
 				}
-				PosY[0]=newp-1;
+				PosY[0]=newp;
 				moves++;
 				break;
 			}
@@ -197,7 +210,7 @@ int game(int Y, int X)
 				cin>>newp;
 				cout<<"Y=";
 				cin>>newp1;
-				while((PosX[2]!=newp && PosY[2]!=newp1) || (PosX[2]==newp && PosY[2]==newp1) && (newp<1 || newp>8) && (newp1<1 || newp1>8))
+				while((PosX[2]!=newp && PosY[2]!=newp1) || (PosX[2]==newp && PosY[2]==newp1))
 				{
 					cout<<"You entered an invalid possition.Enter again:"<<endl;
 					cout<<"X=";
@@ -206,18 +219,18 @@ int game(int Y, int X)
 					cin>>newp1;
 				}
 				PosX[2]=newp;
-				PosY[2]=newp1-1;
+				PosY[2]=newp1;
 				moves++;
 				break;
 			}
 			case 50:
-			{
+		{
 				cout<<"Enter the figures position:"<<endl;
 				cout<<"X=";
 				cin>>newp;
 				cout<<"Y=";
 				cin>>newp1;
-				while((PosX[3]!=newp && PosY[3]!=newp1) || (PosX[3]==newp && PosY[3]==newp1) && (newp<1 || newp>8) && (newp1<1 || newp1>8))
+				while((PosX[3]!=newp && PosY[3]!=newp1) || (PosX[3]==newp && PosY[3]==newp1))
 				{
 					cout<<"You entered an invalid possition.Enter again:"<<endl;
 					cout<<"X=";
@@ -226,26 +239,42 @@ int game(int Y, int X)
 					cin>>newp1;
 				}
 				PosX[3]=newp;
-				PosY[3]=newp1-1;
+				PosY[3]=newp1;
 				moves++;
 				break;
 			}
 		}
-		do
-		{
-			newp=rand()%(X) + 1;
-			newp1=rand()%(Y) + 1;
-			while ((newp!=PosX[1]+1 && newp1!=PosX[1]-1 && newp!=PosX[1]) && (newp1!=PosY[1]+1 && newp1!=PosY[1]-1 && newp1!=PosY[1]))
-			{
-				newp=rand()%(X) + 1;
-				newp1=rand()%(Y) + 0;
-			}
-		}while((PosX[1]==PosX[2] && PosX[1]==PosX[2]+1 && PosX[1]==PosX[2]-1) && (PosX[1]==PosX[3] && PosX[1]==PosX[3]+1 && PosX[1]==PosX[3]-1) && 
-			  (PosY[1]==PosY[2] && PosY[1]==PosY[2]+1 && PosY[1]==PosY[2]-1) && (PosY[1]==PosY[3] && PosY[1]==PosY[3]+1 && PosY[1]==PosX[3]-1));
+		if(((PosY[1]==1 && PosY[1]==PosY[2]) && PosY[1]+1==PosY[3]) || ((PosY[1]==Y && PosY[1]==PosX[3]) && PosY[1]-1==PosY[2]))return moves;
+		if(((PosY[1]==1 && PosY[1]==PosY[3]) && PosY[1]+1==PosY[2]) || ((PosY[1]==Y && PosY[1]==PosX[2]) && PosY[1]-1==PosY[3]))return moves;
+		if(((PosX[1]==1 && PosX[1]==PosX[3]) && PosX[1]+1==PosX[2]) || ((PosX[1]==X && PosX[1]==PosX[2]) && PosX[1]-1==PosX[3]))return moves;
+		if(((PosX[1]==1 && PosX[1]==PosX[2]) && PosX[1]+1==PosX[3]) || ((PosX[1]==X && PosX[1]==PosX[3]) && PosX[1]-1==PosX[2]))return moves;
+		
+		if((PosX[1]==1 && PosY[1]==1) && (PosX[1]+1==PosX[2] || PosX[1]+1==PosX[3]) && (PosY[1]+1==PosY[2] || PosY[1]+1==PosY[3]))return moves;
+		if((PosX[1]==Y && PosY[1]==Y) && (PosX[1]-1==PosX[2] || PosX[1]-1==PosX[3]) && (PosY[1]-1==PosY[2] || PosY[1]-1==PosY[3]))return moves;
+		if((PosX[1]==1 && PosY[1]==Y) && (PosX[1]-1==PosX[2] || PosX[1]-1==PosX[3]) && (PosY[1]+1==PosY[2] || PosY[1]+1==PosY[3]))return moves;
+		if((PosX[1]==Y && PosY[1]==1) && (PosX[1]+1==PosX[2] || PosX[1]+1==PosX[3]) && (PosY[1]-1==PosY[2] || PosY[1]-1==PosY[3]))return moves;
+		
+		if((PosX[1]==1 && PosY[1]==1) && (((PosX[1]+1==PosX[2] || PosX[1]+1==PosX[3]) && PosY[1]-2==PosY[0]) || ((PosY[1]+1==PosY[2] || PosY[1]+1==PosY[3]) && PosX[1]-2==PosX[0])))return moves;
+		if((PosX[1]==Y && PosY[1]==Y) && (((PosX[1]-1==PosX[2] || PosX[1]-1==PosX[3]) && PosY[1]+2==PosY[0]) || ((PosY[1]-1==PosY[2] || PosY[1]-1==PosY[3]) && PosX[1]+2==PosX[0])))return moves;
+		if((PosX[1]==Y && PosY[1]==1) && (((PosX[1]-1==PosX[2] || PosX[1]-1==PosX[3]) && PosY[1]+2==PosY[0]) || ((PosY[1]+1==PosY[2] || PosY[1]+1==PosY[3]) && PosX[1]-2==PosX[0])))return moves;
+		if((PosX[1]==1 && PosY[1]==Y) && (((PosX[1]+1==PosX[2] || PosX[1]+1==PosX[3]) && PosY[1]-2==PosY[0]) || ((PosY[1]-1==PosY[2] || PosY[1]-1==PosY[3]) && PosX[1]+2==PosX[0])))return moves;
 
-		PosX[1]=newp;
-		PosY[1]=newp1-1;
+		if((PosX[1]+1==PosX[2] || PosX[1]+1==PosX[3]) && (PosX[1]-1==PosX[2] || PosX[1]-1==PosX[3]))return moves;
+		if((PosY[1]+1==PosY[2] || PosY[1]+1==PosY[3]) && (PosY[1]-1==PosY[2] || PosY[1]-1==PosY[3]))return moves;
+
+		
+		newp=rand()%(PosX[1]+1) + (PosX[1]-1);
+		newp1=rand()%(PosY[1]+1) + (PosY[1]-1);
+		while((newp==PosX[2] || newp==PosX[3] || (newp==PosX[0]+1 || newp==PosY[0]-1)) || (newp>X || newp<1))
+		{
+			newp=rand()%(PosX[1]+1) + (PosX[1]-1);
+		}
+		while((newp1==PosY[2] || newp1==PosY[3] || (newp1==PosY[0]+1 || newp1==PosY[0]-1)) || (newp1>Y || newp1<1))
+		{
+			newp1=rand()%(PosY[1]+1) + (PosY[1]-1);
+		}
+			PosX[1]=newp;
+			PosY[1]=newp1;
+			cout<<"X="<<PosX[1]<<"\n"<<"Y="<<PosY[1]<<endl;
 	}
-	
-	return moves;
 }
