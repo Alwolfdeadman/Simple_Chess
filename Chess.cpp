@@ -19,349 +19,307 @@
 #include<iostream>
 #include<cstdlib>
 #include<ctime>
+#include<vector>
 
 
 using namespace std;
 
-int random (int high, int low);
-int game (int Y, int X);
 
-int
-main ()
+struct piece 
 {
-  int choice, hight = 8, lenght = 8;
-  int move = 0;
+	char p;
+	int x,y;
+};
 
-  while (true)
+
+int game(const int &Y,const int &X);
+void setPrime(vector<piece> &p, const char* c, const int &X, const int &Y);
+void print(const vector<piece> &p, const int &Y,const int &X);
+
+int main ()
+{
+	int choice, hight = 8, lenght = 8;
+	int move = 0;
+  	while (true)
     {
-      cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	<< endl;
-      cout << "1. Start a new game" << endl;
-      cout << "2. Change the size of the desk" << endl;
-      cout << "3. Exit" << endl;
-      cout << "Enter what you want to do:";
-      cin >> choice;
-      while (choice < 1 || choice > 3)
-	{
-	  cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	    << endl;
-	  cout << "You entered an invalid option.Enter again:";
-	  cin >> choice;
-	}
-      switch (choice)
-	{
-	case 1:
-	  {
-	    move = game (hight, lenght);
-	    cout << "Congratulations you have won!!!";
-	    cout << "Finished in :" << move;
-	    break;
-	  }
-	case 2:
-	  {
-	    cout <<
-	      "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" <<
-	      endl;
-	    cout << "Enter the new hight:";
-	    cin >> hight;
-	    cout << "Enter the new lenght:";
-	    cin >> lenght;
-	    break;
-	  }
-	case 3:
-	  {
-	    return 0;
-	    break;
-	  }
-	}
+		cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<< endl;
+    	cout << "1. Start a new game" << endl;
+    	cout << "2. Change the size of the desk" << endl;
+		cout << "3. Exit" << endl;
+		cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<< endl;
+  		cout << "Enter what you want to do:";
+    	cin >> choice;
+    	cout<<endl;
+    	while (choice < 1 || choice > 3)
+		{
+			cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<< endl;
+	  		cout << "You entered an invalid option.Enter again:";
+	  		cin >> choice;
+		}
+    	switch (choice)
+		{
+		case 1:
+	  	{
+		    move = game (hight, lenght);
+		    cout << "Congratulations you have won!!!";
+		    cout << "Finished in :" << move;
+		    break;
+		}
+		case 2:
+	  	{
+	    	cout <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" <<endl;
+	    	cout << "Enter the new hight:";
+	    	cin >> hight;
+	    	cout << "Enter the new lenght:";
+	    	cin >> lenght;
+	    	break;
+	  	}
+		case 3:
+	  	{
+		    return 0;
+		    break;
+	  	}
+		}
     }
+}
+void print(const vector<piece> &p, const int &Y,const int &X)
+{
+	int i=0;
+	cout<<"    ";
+	while(i<Y)
+		cout<<i++<<" ";
+	i=0;
+	cout<<endl;
+	while(i<Y)
+	{
+		int j=0;
+		while(j<X+2)
+		{
+			if(j == 0)
+		  		cout<<i<<" "<<char (186)<<" ";
+			else if(j == X+1)
+		  		cout<<char (186)<<"\n";
+			else if(i == p[0].y && j-1 == p[0].x)
+			{
+				cout<<p[0].p<<" ";
+			}
+			else if(i == p[1].y && j-1 == p[1].x)
+			{
+				cout<<p[1].p<<" ";
+			}
+			else if(i == p[2].y && j-1 == p[2].x)
+			{
+				cout<<p[2].p<<" ";
+			}
+			else if(i == p[3].y && j-1 == p[3].x)
+			{
+				cout<<p[3].p<<" ";
+			}
+			else 
+			{
+				cout<<"_ ";
+			}
+			j++;
+		}
+		i++;
+	}
+	
+}
+void setPrime(vector<piece> &p, const char* c, const int &X, const int &Y)
+{
+	piece tmp;
+	srand (time (NULL));
+
+	switch(*c)
+	{
+		case 'K':
+		{
+			tmp.x = rand()%(X);
+    		tmp.y = rand()%(Y);
+			tmp.p = 'K';
+			break;
+		}case '1':
+		{
+			tmp.x = rand()%(X);    
+    		tmp.y = rand()%(Y);
+    		while(tmp.x == p[0].x && tmp.y == p[0].y)
+    		{
+				tmp.x = rand()%(X);
+    			tmp.y = rand()%(Y);
+    		}
+			tmp.p = '1';
+			break;
+		}case '2':
+		{
+			tmp.x = rand()%(X);
+    		tmp.y = rand()%(Y);
+    		while((tmp.x == p[0].x && tmp.y == p[0].y)
+				|| (tmp.x == p[1].x && tmp.y == p[1].y))
+				{
+	    			tmp.x = rand()%(X);
+    				tmp.y = rand()%(Y);
+    			}
+			tmp.p = '2';
+			break;
+		}case 'P':
+		{
+			tmp.x = rand()%(X);
+			tmp.y = rand()%(Y);
+    		while((tmp.x<=p[0].x+1 && tmp.x>=p[0].x-1 && tmp.y<=p[0].y+1 && tmp.y>=p[0].y-1)
+    		     ||tmp.x == p[1].x || tmp.y == p[1].y
+       		     ||tmp.x == p[2].x || tmp.y == p[2].y
+				 )
+				{
+	    			tmp.x = rand()%(X);
+    				tmp.y = rand()%(Y);
+    			}
+			tmp.p = 'P';
+			break;
+		}
+	}
+	p.push_back(tmp);
 }
 
 
-
-
-int
-game (int Y, int X)
+int game(const int &Y,const int &X)
 {
-  int count1 = 1, count2 = 0;
-  int PosX[4];
-  int PosY[4];
-  int newp, newp1;
-  int moves = 0;
-  char fig;
-  bool matted = 1;
+	int moves=0;
+	vector<piece> p;
+	bool notMatted=true;
+	
+	setPrime(p,"K",X,Y);
+	setPrime(p,"1",X,Y);
+	setPrime(p,"2",X,Y);
+	setPrime(p,"P",X,Y);
 
 
-  {				//Placement of pawns
+	bool **mat;
+	mat=new bool*[Y];
+	for(int i=0;i<Y;i++)
+		mat[i]=new bool[X];	
+	
 
-    srand (time (NULL));
-    PosX[0] = rand () % (X) + 1;	//player king X       
-    PosY[0] = rand () % (Y) + 1;	//player king Y
-
-
-
-    newp = rand () % (X) + 1;
-    while (PosX[0] == newp)
-      {
-	newp = rand () % (X) + 1;	//Knight2 X     
-      }
-    PosX[3] = newp;
-    newp = rand () % (Y) + 1;
-    while (PosY[0] == newp)
-      {
-	newp = rand () % (Y) + 1;	//Knight2 Y
-      }
-    PosY[3] = newp;
-
-
-
-    newp = rand () % (X) + 1;
-    while (PosX[0] == newp || PosX[3] == newp)
-      {
-	newp = rand () % (X) + 1;	//Knight1 X             
-      }
-    PosX[2] = newp;
-    newp = rand () % (Y) + 1;
-    while (PosY[0] == newp || PosY[3] == newp)
-      {
-	newp = rand () % (Y) + 1;	//Knight1 Y
-
-      }
-    PosY[2] = newp;
-
-
-
-    newp = rand () % (X) + 1;
-    while (PosX[3] == newp || PosX[0] == newp || PosX[2] == newp
-	   || PosX[0] + 1 == newp || PosX[0] - 1 == newp)
-      {
-	newp = rand () % (X) + 1;	//Enemy king X
-      }
-    PosX[1] = newp;
-    newp = rand () % (Y) + 0;
-    while (PosY[3] == newp || PosY[0] == newp || PosY[2] == newp
-	   || PosY[0] + 1 == newp || PosY[0] - 1 == newp)
-      {
-	newp = rand () % (Y) + 1;	//Enemy king Y
-
-      }
-    PosY[1] = newp;
-  }
-
-
-  while (matted)
-    {
-      count1 = 1;
-      count2 = 0;		//map drawing
-      while (count1 <= Y)
+	
+	while(notMatted)
 	{
-	  while (count2 < X + 2)
-	    {
-	      if (count2 == 0)
+		char fig;
+		int x, y, i=0;
+		print(p, Y, X);
+
+		cout << "Enter the figure you want to move:";
+      	cin >> fig;
+      	while (fig != '1' && fig != '2' && fig != 'K' && fig != 'k')
 		{
-		  cout << char (186) << " ";
+		  	cout << "Not a valid pawn.Chose a valid one:";
+		  	cin >> fig;
 		}
-	      else if (count2 == X + 1)
+		switch((int)fig)
 		{
-		  cout << char (186) << "\n";
+			case'k':
+			case'K':
+			{
+				cout<<"Enter the figures position.\nX=";
+			    cin>>x;
+			    cout<<"Y=";
+			    cin>>y;
+			    while(x<p[0].x-1 || x>p[0].x+1 || x<0 || x>=X || y<p[0].y-1 || y>p[0].y+1 || y<0 || y>=Y)
+			    {
+			    	cout <<"The king can't reach such a possition or it's out of bounds.\nX=";
+					cin >> x;
+			    	cout <<"Y=";
+					cin >> y;
+				}
+				p[0].x=x;
+				p[0].y=y;
+				break;
+			}
+			case'1':
+			case'2':
+			{
+				cout<<"Enter the figures position.\nX=";
+			    cin>>x;
+			    cout<<"\nY= ";
+			    cin>>y;
+
+				if(fig == '1')
+				{
+				    while((p[1].x!=x && p[1].y!=y) || (p[1].x==x && p[1].y ==y) || x<0 || x>=X || y<0 || y>=Y)
+			    	{
+			    		
+			    		cout <<"The knight cant move to such a location or it's out of bounds.\nX= ";
+						cin >> x;
+						cout<<"Y= ";
+						cin>>y;
+					}
+					p[1].x=x;
+					p[1].y=y; 
+				}else
+				{
+				    while((p[2].x!=x && p[2].y!=y) || (p[2].x==x && p[2].y ==y) || x<0 || x>=X || y<0 || y>=Y)
+			    	{
+			    		cout <<"The knight cant move to such a location or it's out of bounds.\nX= ";
+						cin >> x;
+						cout<<"Y= ";
+						cin>>y;
+					}
+					p[2].x=x;
+					p[2].y=y;
+				}
+				break;
+			}
 		}
-	      else if (count1 == PosY[0] && count2 == PosX[0])
+		
+		while(i<Y)
 		{
-		  cout << "K" << " ";
+			int j=0;
+			while(j<X)
+			{
+				if (j == p[1].x || i == p[1].y || j == p[2].x || i == p[2].y 
+				|| (j<=p[0].x+1 && j>=p[0].x-1 && i<=p[0].y+1 && i>=p[0].y-1))
+					mat[i][j]=1;
+				else 
+					mat[i][j]=0;
+				if((j==p[1].x && i==p[1].y && j!=p[2].x && i!=p[2].y) || (j==p[2].x && i==p[2].y && j!=p[1].x && i!=p[1].y))
+					mat[i][j]=0;
+				j++;
+			}
+			i++;
 		}
-	      else if (count1 == PosY[1] && count2 == PosX[1])
-		{
-		  cout << "E" << " ";
-		}
-	      else if (count1 == PosY[2] && count2 == PosX[2])
-		{
-		  cout << "1" << " ";
-		}
-	      else if (count1 == PosY[3] && count2 == PosX[3])
-		{
-		  cout << "2" << " ";
-		}
-	      else
-		cout << "_" << " ";
-	      count2++;
-	    }
-	  count2 = 0;
-	  count1++;
+		
+		moves++;
+		if((p[3].y-1 == -1 || (mat[p[3].y-1][p[3].x-1] && mat[p[3].y-1][p[3].x] && mat[p[3].y-1][p[3].x+1])) &&
+		   (p[3].y+1 ==  Y || (mat[p[3].y+1][p[3].x-1] && mat[p[3].y+1][p[3].x] && mat[p[3].y+1][p[3].x+1])) &&
+		   (p[3].x-1 ==  0 || mat[p[3].y][p[3].x-1]) &&
+		   (p[3].x+1 == X+1 || mat[p[3].y][p[3].x+1]))
+		   {
+		   		notMatted=false;
+		   		break;
+		   }
+			
+			
+		do{ 
+			x=rand()%(3)-1;
+     		y=rand()%(3)-1;
+     		x+=p[3].x;
+     		y+=p[3].y;
+     		
+			if (!(mat[y][x]) && x == p[1].x && y == p[1].y)
+		    {
+			  	p[1].x=-1;
+			  	p[1].y=-1;
+			  	break;
+		  	}
+			else if((!mat[y][x]) && x == p[2].x && y == p[2].y)
+			{
+			  	p[2].x=-1;
+			  	p[2].y=-1;
+			  	break;				
+			}
+		}while(mat[y][x] || !(x>=0 && x<X) || !(y>0 && y<Y)
+		    || x<p[3].x-1 ||  x>p[3].x+1 || y<p[3].y-1 ||  y>p[3].y+1
+			|| (x==p[3].x && y==p[3].y));
+	  	p[3].x=x;
+		p[3].y=y;
 	}
-
-      cout << "Enter the figure you want to move:";
-      cin >> fig;
-      while (fig != 75 && fig != 49 && fig != 50)
-	{
-	  cout << "Not a valid pawn.Chose a valid one:";
-	  cin >> fig;
-	}
-      switch (int (fig))
-	{
-	case 75:
-	  {
-	    cout << "Enter the figures position:" << endl;
-	    cout << "X=";
-	    cin >> newp;
-	    while (newp > 8 || newp < 1)
-	      {
-		cout <<
-		  "You entered a value greater or lower than the boards range. Enter again:";
-		cin >> newp;
-	      }
-	    while (newp > PosX[0] + 1 || newp < PosX[0] - 1)
-	      {
-		cout << "You entered an invalid possition.Enter again:";
-		cin >> newp;
-	      }
-	    PosX[0] = newp;
-	    cout << "Y=";
-	    cin >> newp;
-	    while (newp > 8 || newp < 1)
-	      {
-		cout <<
-		  "You entered a value greater or lower than the boards range. Enter again:";
-		cin >> newp;
-	      }
-	    while (newp > PosY[0] + 1 || newp < PosY[0] - 1)
-	      {
-		cout << "You entered an invalid possition.Enter again:";
-		cin >> newp;
-	      }
-	    PosY[0] = newp;
-	    moves++;
-	    break;
-	  }
-	case 49:
-	  {
-	    cout << "Enter the figures position:" << endl;
-	    cout << "X=";
-	    cin >> newp;
-	    cout << "Y=";
-	    cin >> newp1;
-	    while ((PosX[2] != newp && PosY[2] != newp1)
-		   || (PosX[2] == newp && PosY[2] == newp1))
-	      {
-		cout << "You entered an invalid possition.Enter again:" <<
-		  endl;
-		cout << "X=";
-		cin >> newp;
-		cout << "Y=";
-		cin >> newp1;
-	      }
-	    PosX[2] = newp;
-	    PosY[2] = newp1;
-	    moves++;
-	    break;
-	  }
-	case 50:
-	  {
-	    cout << "Enter the figures position:" << endl;
-	    cout << "X=";
-	    cin >> newp;
-	    cout << "Y=";
-	    cin >> newp1;
-	    while ((PosX[3] != newp && PosY[3] != newp1)
-		   || (PosX[3] == newp && PosY[3] == newp1))
-	      {
-		cout << "You entered an invalid possition.Enter again:" <<
-		  endl;
-		cout << "X=";
-		cin >> newp;
-		cout << "Y=";
-		cin >> newp1;
-	      }
-	    PosX[3] = newp;
-	    PosY[3] = newp1;
-	    moves++;
-	    break;
-	  }
-	}
-      if (((PosY[1] == 1 && PosY[1] == PosY[2]) && PosY[1] + 1 == PosY[3])
-	  || ((PosY[1] == Y && PosY[1] == PosX[3]) && PosY[1] - 1 == PosY[2]))
 	return moves;
-      if (((PosY[1] == 1 && PosY[1] == PosY[3]) && PosY[1] + 1 == PosY[2])
-	  || ((PosY[1] == Y && PosY[1] == PosX[2]) && PosY[1] - 1 == PosY[3]))
-	return moves;
-      if (((PosX[1] == 1 && PosX[1] == PosX[3]) && PosX[1] + 1 == PosX[2])
-	  || ((PosX[1] == X && PosX[1] == PosX[2]) && PosX[1] - 1 == PosX[3]))
-	return moves;
-      if (((PosX[1] == 1 && PosX[1] == PosX[2]) && PosX[1] + 1 == PosX[3])
-	  || ((PosX[1] == X && PosX[1] == PosX[3]) && PosX[1] - 1 == PosX[2]))
-	return moves;
-
-      if ((PosX[1] == 1 && PosY[1] == 1)
-	  && (PosX[1] + 1 == PosX[2] || PosX[1] + 1 == PosX[3])
-	  && (PosY[1] + 1 == PosY[2] || PosY[1] + 1 == PosY[3]))
-	return moves;
-      if ((PosX[1] == Y && PosY[1] == Y)
-	  && (PosX[1] - 1 == PosX[2] || PosX[1] - 1 == PosX[3])
-	  && (PosY[1] - 1 == PosY[2] || PosY[1] - 1 == PosY[3]))
-	return moves;
-      if ((PosX[1] == 1 && PosY[1] == Y)
-	  && (PosX[1] - 1 == PosX[2] || PosX[1] - 1 == PosX[3])
-	  && (PosY[1] + 1 == PosY[2] || PosY[1] + 1 == PosY[3]))
-	return moves;
-      if ((PosX[1] == Y && PosY[1] == 1)
-	  && (PosX[1] + 1 == PosX[2] || PosX[1] + 1 == PosX[3])
-	  && (PosY[1] - 1 == PosY[2] || PosY[1] - 1 == PosY[3]))
-	return moves;
-
-      if ((PosX[1] == 1 && PosY[1] == 1)
-	  &&
-	  (((PosX[1] + 1 == PosX[2] || PosX[1] + 1 == PosX[3])
-	    && PosY[1] - 2 == PosY[0]) || ((PosY[1] + 1 == PosY[2]
-					    || PosY[1] + 1 == PosY[3])
-					   && PosX[1] - 2 == PosX[0])))
-	return moves;
-      if ((PosX[1] == Y && PosY[1] == Y)
-	  &&
-	  (((PosX[1] - 1 == PosX[2] || PosX[1] - 1 == PosX[3])
-	    && PosY[1] + 2 == PosY[0]) || ((PosY[1] - 1 == PosY[2]
-					    || PosY[1] - 1 == PosY[3])
-					   && PosX[1] + 2 == PosX[0])))
-	return moves;
-      if ((PosX[1] == Y && PosY[1] == 1)
-	  &&
-	  (((PosX[1] - 1 == PosX[2] || PosX[1] - 1 == PosX[3])
-	    && PosY[1] + 2 == PosY[0]) || ((PosY[1] + 1 == PosY[2]
-					    || PosY[1] + 1 == PosY[3])
-					   && PosX[1] - 2 == PosX[0])))
-	return moves;
-      if ((PosX[1] == 1 && PosY[1] == Y)
-	  &&
-	  (((PosX[1] + 1 == PosX[2] || PosX[1] + 1 == PosX[3])
-	    && PosY[1] - 2 == PosY[0]) || ((PosY[1] - 1 == PosY[2]
-					    || PosY[1] - 1 == PosY[3])
-					   && PosX[1] + 2 == PosX[0])))
-	return moves;
-
-      if ((PosX[1] + 1 == PosX[2] || PosX[1] + 1 == PosX[3])
-	  && (PosX[1] - 1 == PosX[2] || PosX[1] - 1 == PosX[3]))
-	return moves;
-      if ((PosY[1] + 1 == PosY[2] || PosY[1] + 1 == PosY[3])
-	  && (PosY[1] - 1 == PosY[2] || PosY[1] - 1 == PosY[3]))
-	return moves;
-
-
-      newp = rand () % (PosX[1] + 1) + (PosX[1] - 1);
-      newp1 = rand () % (PosY[1] + 1) + (PosY[1] - 1);
-      while ((newp == PosX[2] || newp == PosX[3]
-	      || (newp == PosX[0] + 1 || newp == PosY[0] - 1)) || (newp > X
-								   || newp <
-								   1))
-	{
-	  newp = rand () % (PosX[1] + 1) + (PosX[1] - 1);
-	}
-      while ((newp1 == PosY[2] || newp1 == PosY[3]
-	      || (newp1 == PosY[0] + 1 || newp1 == PosY[0] - 1)) || (newp1 > Y
-								     || newp1
-								     < 1))
-	{
-	  newp1 = rand () % (PosY[1] + 1) + (PosY[1] - 1);
-	}
-      PosX[1] = newp;
-      PosY[1] = newp1;
-      cout << "X=" << PosX[1] << "\n" << "Y=" << PosY[1] << endl;
-    }
 }
